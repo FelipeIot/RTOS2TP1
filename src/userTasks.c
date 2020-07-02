@@ -11,6 +11,7 @@
 #include "pt1.h"
 #include "tipos.h"
 #include "fsm_debounce.h"
+
  
 /*=====[Inclusions of private function dependencies]=========================*/
  DEBUG_PRINT_ENABLE;
@@ -34,10 +35,6 @@
 void TareaA( void* taskParmPtr )
 {
     // ---------- CONFIGURACIONES ------------------------------
-
-
-
-
 
     gpioWrite( LED1, ON );
     vTaskDelay( 1000 / portTICK_RATE_MS );	 					// Envia la tarea al estado bloqueado durante 1 s (delay)
@@ -64,12 +61,12 @@ void TareaA( void* taskParmPtr )
 		xQueueSend( cola1 ,&texto[0] , portMAX_DELAY );//envio mensaje a cola
 
 
-    	//xQueueSend( cola1 ,&h ,  3000 / portTICK_RATE_MS  );//envio mensaje a cola
+
     	gpioWrite( LEDB ,1 );
         vTaskDelay( 500 / portTICK_RATE_MS );
         gpioWrite( LEDB ,0 );
 
-        //vTaskDelay( 500 / portTICK_RATE_MS ); //NO USAR!!
+
 
         // Envia la tarea al estado bloqueado durante xPeriodicity (delay periodico)
         vTaskDelayUntil( &xLastWakeTime , xPeriodicity );
@@ -90,15 +87,8 @@ void TareaB( void* taskParmPtr )
 }
 void TareaC( void* taskParmPtr )
 {
-	//struct Mensaje rec;
 
     debugPrintConfigUart( UART_USB, 9600 );
-    debugPrintlnString( "Ejercicio printf.\n" );
-
-
-    //TickType_t xPeriodicity =  1000 / portTICK_RATE_MS;		// Tarea periodica cada 1000 ms
-
-    //TickType_t xLastWakeTime = xTaskGetTickCount();
 
     // ---------- REPETIR POR SIEMPRE --------------------------
     while( TRUE )

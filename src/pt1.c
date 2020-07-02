@@ -12,7 +12,7 @@
 #include "FreeRTOS.h"
 #include "FreeRTOSConfig.h"
 #include "task.h"
-
+#include "queue.h"
 #include "sapi.h"
 #include "userTasks.h"
 #include "tipos.h"
@@ -20,7 +20,7 @@
 /*=====[Definition macros of private constants]==============================*/
 
 /*=====[Definitions of extern global variables]==============================*/
-
+DEBUG_PRINT_ENABLE;
 /*=====[Definitions of public global variables]==============================*/
 
 /*=====[Definitions of private global variables]=============================*/
@@ -30,6 +30,9 @@ tLedTecla tecla_led_config[2];
 int main( void )
 {
    boardInit();
+   //config uart
+   debugPrintConfigUart( UART_USB, 9600 );
+   debugPrintlnString("TP1 RTOS2 FELIPE SARCHE");
 
 
    tecla_led_config[0].identificador = '2';
@@ -48,7 +51,7 @@ int main( void )
    cola1=xQueueCreate(6,sizeof (vec));//defino los parámetro de la cola
 
    // Create a task in freeRTOS with dynamic memory
-   xTaskCreate(
+   BaseType_t taskA=xTaskCreate(
       TareaA,                     // Function that implements the task.
       (const char *)"myTask",     // Text name for the task.
       configMINIMAL_STACK_SIZE*2, // Stack size in words, not bytes.
@@ -56,7 +59,7 @@ int main( void )
       tskIDLE_PRIORITY+1,         // Priority at which the task is created.
       0                           // Pointer to the task created in the system
    );
-   xTaskCreate(
+   BaseType_t taskB1=xTaskCreate(
       TareaB,                     // Function that implements the task.
       (const char *)"fmstec2",     // Text name for the task.
       configMINIMAL_STACK_SIZE*2, // Stack size in words, not bytes.
@@ -64,7 +67,7 @@ int main( void )
       tskIDLE_PRIORITY+1,         // Priority at which the task is created.
       0                           // Pointer to the task created in the system
    );
-   xTaskCreate(
+   BaseType_t taskB2=xTaskCreate(
       TareaB,                     // Function that implements the task.
       (const char *)"fmstec1",     // Text name for the task.
       configMINIMAL_STACK_SIZE*2, // Stack size in words, not bytes.
@@ -72,7 +75,7 @@ int main( void )
       tskIDLE_PRIORITY+1,         // Priority at which the task is created.
       0                           // Pointer to the task created in the system
    );
-   xTaskCreate(
+   BaseType_t taskC=xTaskCreate(
       TareaC,                     // Function that implements the task.
       (const char *)"myTask",     // Text name for the task.
       configMINIMAL_STACK_SIZE*2, // Stack size in words, not bytes.
@@ -81,6 +84,35 @@ int main( void )
       0                           // Pointer to the task created in the system
    );
    mutex 	=  xSemaphoreCreateMutex();
+
+
+   //CONTROL DE ERRORES//
+   if(taskA==pdFAIL)
+   {
+	   debugPrintlnString("Fallo creación tareaA")
+	   while(1);
+   }
+   if(taskB1==pdFAIL)
+   {
+	   debugPrintlnString("Fallo creación tareaB1")
+	   while(1);
+   }
+   if(taskB2==pdFAIL)
+   {
+	   debugPrintlnString("Fallo creación tareaB2")
+	   while(1);
+   }
+   if(taskC==pdFAIL)
+   {
+	   debugPrintlnString("Fallo creación tareaC")
+	   while(1);
+   }
+   if(cola1==NULL)
+   {
+	   debugPrintlnString("Fallo creación cola")
+	   while(1);
+   }
+
    vTaskStartScheduler(); // Initialize scheduler
 
    while( true ); // If reach heare it means that the scheduler could not start

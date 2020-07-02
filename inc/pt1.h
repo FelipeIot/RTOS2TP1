@@ -19,6 +19,7 @@
 #include "FreeRTOS.h"
 #include "sapi.h"
 #include "semphr.h"
+#include "queue.h"
 /*=====[C++ - begin]=========================================================*/
 
 #ifdef __cplusplus

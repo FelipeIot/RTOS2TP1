@@ -15,6 +15,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "sapi.h"
+#include "queue.h"
 
 /*=====[C++ - begin]=========================================================*/
 
