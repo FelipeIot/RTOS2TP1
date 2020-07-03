@@ -57,10 +57,10 @@ void buttonReleased( tLedTecla* config )
 	config->tiempo_medido = config->tiempo_up - config->tiempo_down;
 	char snum[4];
 	uint32_t tiempo;
-	tiempo=config->tiempo_medido/portTICK_RATE_MS;
+	tiempo=config->tiempo_medido/portTICK_RATE_MS;// obtengo diferencia en ms
 	if(tiempo>=9999)
 	{
-		tiempo=9999;
+		tiempo=9999;//saturo la diferencia
 
 	}
 	itoa(tiempo, snum, 10);
@@ -96,7 +96,7 @@ void buttonReleased( tLedTecla* config )
 		vec[9]=snum[3];
 		vec[10]='\n';
 
-		xQueueSend( cola1 , &vec[0],  portMAX_DELAY  );
+		xQueueSend( cola1 , &vec[0],  portMAX_DELAY  );//envio tiempor en cola
 	}
 
 }

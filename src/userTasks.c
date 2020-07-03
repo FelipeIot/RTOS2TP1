@@ -77,11 +77,11 @@ void TareaB( void* taskParmPtr )
 
 	tLedTecla* config = (tLedTecla*) taskParmPtr;
 
-	fsmButtonInit( config );
+	fsmButtonInit( config );//inicialización botones
 
 	while( 1 )
 	{
-		fsmButtonUpdate( config );
+		fsmButtonUpdate( config ); //maquina de estados
 	 	vTaskDelay( 1 / portTICK_RATE_MS );
 	}
 }
@@ -96,11 +96,11 @@ void TareaC( void* taskParmPtr )
     	char vec[6];
     	int indicetareac;
     	xQueueReceive( cola1 , &vec[0],  portMAX_DELAY );//recibo los datos de la cola
-    	xSemaphoreTake(mutex , portMAX_DELAY );
+    	xSemaphoreTake(mutex , portMAX_DELAY );//protección de recurso puerto serial
     	//gpioToggle( LED1 );
     	for(indicetareac=0;indicetareac<11;indicetareac++)
     	{
-    		debugPrintChar(vec[indicetareac]);
+    		debugPrintChar(vec[indicetareac]);//imprimo valor de cola
     		if(vec[indicetareac]=='\n')
     		{
     			break;
